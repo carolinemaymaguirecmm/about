@@ -1,7 +1,15 @@
+# Writing Samples
 
+These are selected examples of product documentation and user help content I've contributed to or maintained:
 
-https://docs.johnsoncontrols.com/bas/r/Metasys/en-US/SCT-System-Configuration-Tool-Help/17.0 
-https://docs.johnsoncontrols.com/bas/r/Metasys/en-US/Johnson-Controls-System-Configuration-Tool-JCT-Help/8.0 
-https://oomnitza.zendesk.com/hc/en-us/articles/7544354166679-Copying-a-workflow 
-https://oomnitza.zendesk.com/hc/en-us/articles/10443627437719-Adding-records-to-custom-objects 
-https://github.com/Oomnitza/oomnitza-connector 
+- **Johnson Controls – SCT Help, Installation Instructions, Release Note (Catalog Page)**  
+  [System Configuration Tool Help](https://docs.johnsoncontrols.com/bas/r/Metasys/en-US/SCT-System-Configuration-Tool-Help/17.0)
+
+- **Oomnitza – User Documentation**  
+  [Oomnitza User Guide](https://oomnitza.zendesk.com/hc/en-us)
+
+- **Oomnitza – API GitHub Repo**  
+  [Oomnitza Connector GitHub Repository](https://github.com/Oomnitza/oomnitza-connector)
+
+- **Analog Devices – CodeFusion Studio User Guide**  
+  [CodeFusion Studio Documentation](https://developer.analog.com/docs/codefusion-studio/latest/user-guide)
