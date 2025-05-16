@@ -8,20 +8,17 @@ Hi! I'm Caroline Maguire — a technical writer and product specialist based in 
 
 This GitHub repository serves as my public portfolio and learning hub. It includes:
 
-- 📄 My resume 
-<!-- - ✍️ Technical writing samples (API docs, user guides, release notes) -->
-<!-- - 🧪 Academic projects from my MSc in Software Design with AI -->
-<!-- - 🎓 Certifications and learning logs -->
-<!-- - 📚 A curated list of helpful tools and resources for technical writing -->
+- 📄 [My CV](CV/)
+- ✍️ [Technical writing samples](cv/writing-samples/writing-samples.md) – API docs, user guides, release notes
+- 🧪 [Academic projects](cv/academic-projects/academic-projects.md) from my MSc in Software Design with AI
+- 📚 [Resources](cv/resources/resources.md) – a curated list of tools and guides for technical writing
 
 ---
 
 ## 📌 Featured Work
 
-<!-- ### Featured Work -->
-<!-- - [AI Masters Project](projects/ai-masters-project/README.md) -->
-<!-- - [API Documentation Sample](writing-samples/api-doc-sample.md) -->
-<!-- - [Certifications](learning/certifications.md) -->
+- [AI Masters Project](featured-work/ai-masters-project/README.md)
+- [Certifications](featured-work/certifications/certifications.md)
 
 ---
 
