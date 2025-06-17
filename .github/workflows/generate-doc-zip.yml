@@ -1,0 +1,62 @@
+name: Deploy Dummy Docs and Generate ZIP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install mike mkdocs mkdocs-material
+
+      - name: Deploy all specified versions
+        run: |
+          declare -A releases=(
+            ["1.0.0"]="release/1.0.0"
+            ["2.0.0"]="release/2.0.0"
+            ["3.0.0"]="release/3.0.0"
+          )
+
+          for version in "${!releases[@]}"; do
+            branch="${releases[$version]}"
+            echo "Deploying version $version from branch $branch"
+
+            git fetch origin "$branch"
+            git checkout "$branch" || git checkout -b "$branch"
+            git pull origin "$branch" || echo "No remote updates"
+
+            if [[ "$version" == "3.0.0" ]]; then
+              mike deploy "$version" latest --update-aliases --ignore-remote-status
+              mike set-default latest --ignore-remote-status
+            else
+              mike deploy "$version" --ignore-remote-status
+            fi
+          done
+
+      - name: Checkout gh-pages
+        run: |
+          git fetch origin gh-pages
+          git checkout gh-pages || git checkout -b gh-pages
+          git pull origin gh-pages || echo "No remote updates"
+
+      - name: Archive site into ZIP
+        run: git archive --format zip --output dummy-docs.zip gh-pages
+
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dummy-docs-zip
+          path: dummy-docs.zip
