@@ -5,3 +5,15 @@ nav:
 
 theme:
   name: harmonic
+
+plugins:
+  - search
+  - mike:
+      alias_type: copy
+  - print-site:
+      enabled: !ENV [ENABLE_PDF_EXPORT, false]
+      add_cover_page: true
+      enumerate_headings: false
+      print_page_title: CodeFusion Studio
+      cover_page_template: "docs/assets/templates/cover_page.tpl"
+
