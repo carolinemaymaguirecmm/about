@@ -51,29 +51,32 @@ jobs:
             fi
           done
 
+      - name: Install headless Chromium
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+      
       - name: Enable PDF export
         run: echo "ENABLE_PDF_EXPORT=true" >> $GITHUB_ENV
-
+      
       - name: Build site with printable content
         run: mkdocs build
-
-      - name: Upload printable HTML page
-        uses: actions/upload-artifact@v4
-        with:
-          name: printable-docs-html
-          path: site/print/index.html
-          
-      - name: Checkout gh-pages
+      
+      - name: Generate PDF from printable HTML
         run: |
-          git fetch origin gh-pages
-          git checkout gh-pages || git checkout -b gh-pages
-          git pull origin gh-pages || echo "No remote updates"
-
-      - name: Archive site into ZIP
-        run: git archive --format zip --output dummy-docs.zip gh-pages
-
+          chromium-browser --headless --disable-gpu \
+            --print-to-pdf=site/docs.pdf \
+            --no-margins \
+            file://$PWD/site/print/index.html
+      
+      - name: Archive site output into ZIP
+        run: |
+          cd site
+          zip -r ../dummy-docs.zip .
+      
       - name: Upload ZIP artifact
         uses: actions/upload-artifact@v4
         with:
           name: dummy-docs-zip
           path: dummy-docs.zip
+
