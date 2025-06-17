@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mike mkdocs mkdocs-material
+          pip install mike mkdocs mkdocs-harmonic
       
       - name: Set Git identity  
         run: |
