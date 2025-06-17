@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mike mkdocs mkdocs-harmonic
+          pip install mike mkdocs git+https://github.com/analogdevicesinc/harmonic-mkdocs-theme.git
       
       - name: Set Git identity  
         run: |
