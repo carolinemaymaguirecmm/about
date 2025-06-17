@@ -21,13 +21,18 @@ jobs:
       - name: Install dependencies
         run: |
           pip install mike mkdocs git+https://github.com/analogdevicesinc/harmonic-mkdocs-theme.git mkdocs-print-site-plugin
-      
-      - name: Set Git identity  
+
+      - name: Install Chromium
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+
+      - name: Set Git identity
         run: |
           git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"    
+          git config --global user.email "actions@github.com"
 
-      - name: Deploy all specified versions
+      - name: Deploy all versions and generate PDFs
         run: |
           declare -A releases=(
             ["1.0.0"]="release/1.0.0"
@@ -37,46 +42,36 @@ jobs:
 
           for version in "${!releases[@]}"; do
             branch="${releases[$version]}"
-            echo "Deploying version $version from branch $branch"
+            echo "Deploying and generating PDF for version $version from branch $branch"
 
             git fetch origin "$branch"
             git checkout "$branch" || git checkout -b "$branch"
             git pull origin "$branch" || echo "No remote updates"
 
-            if [[ "$version" == "3.0.0" ]]; then
+            if [[ "$version" == "1.1.0" ]]; then
               mike deploy "$version" latest --update-aliases --ignore-remote-status
               mike set-default latest --ignore-remote-status
             else
               mike deploy "$version" --ignore-remote-status
             fi
+
+            echo "ENABLE_PDF_EXPORT=true" >> $GITHUB_ENV
+            mkdocs build
+
+            mkdir -p "site/${version}/assets"
+            chromium-browser --headless --disable-gpu \
+              --print-to-pdf="site/${version}/assets/codefusion-studio.pdf" \
+              --no-margins \
+              file://$PWD/site/print/index.html
           done
 
-      - name: Install headless Chromium
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-      
-      - name: Enable PDF export
-        run: echo "ENABLE_PDF_EXPORT=true" >> $GITHUB_ENV
-      
-      - name: Build site with printable content
-        run: mkdocs build
-      
-      - name: Generate PDF from printable HTML
-        run: |
-          chromium-browser --headless --disable-gpu \
-            --print-to-pdf=site/docs.pdf \
-            --no-margins \
-            file://$PWD/site/print/index.html
-      
-      - name: Archive site output into ZIP
+      - name: Archive HTML and PDFs
         run: |
           cd site
           zip -r ../dummy-docs.zip .
-      
+
       - name: Upload ZIP artifact
         uses: actions/upload-artifact@v4
         with:
           name: dummy-docs-zip
           path: dummy-docs.zip
-
