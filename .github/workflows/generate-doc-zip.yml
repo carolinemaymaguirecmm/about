@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mike mkdocs git+https://github.com/analogdevicesinc/harmonic-mkdocs-theme.git
+          pip install mike mkdocs git+https://github.com/analogdevicesinc/harmonic-mkdocs-theme.git mkdocs-print-site-plugin
       
       - name: Set Git identity  
         run: |
@@ -51,6 +51,18 @@ jobs:
             fi
           done
 
+      - name: Enable PDF export
+        run: echo "ENABLE_PDF_EXPORT=true" >> $GITHUB_ENV
+
+      - name: Build site with printable content
+        run: mkdocs build
+
+      - name: Upload printable HTML page
+        uses: actions/upload-artifact@v4
+        with:
+          name: printable-docs-html
+          path: site/print/index.html
+          
       - name: Checkout gh-pages
         run: |
           git fetch origin gh-pages
