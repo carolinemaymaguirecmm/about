@@ -7,6 +7,8 @@ nav:
           - Thesis: cv/academic-projects/academic-projects.md
       - Writing samples:
           - Writing samples: cv/writing-samples/writing-samples.md
+      - AI masters:
+          - AI masters project: cv/ai-masters-project/readme.md
 theme:
   name: harmonic
 
