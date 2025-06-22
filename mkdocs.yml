@@ -1,8 +1,12 @@
-site_name: Dummy Docs Site
+site_name: Docs Site
 
 nav:
   - Home: index.md
-
+  - CV:
+      - Academic projects:
+          - Thesis: cv/academic-projects/academic-projects.md
+      - Writing samples:
+          - Writing samples: CV/writing-samples/writing-samples.md
 theme:
   name: harmonic
 
