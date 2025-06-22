@@ -6,7 +6,7 @@ nav:
       - Academic projects:
           - Thesis: cv/academic-projects/academic-projects.md
       - Writing samples:
-          - Writing samples: CV/writing-samples/writing-samples.md
+          - Writing samples: cv/writing-samples/writing-samples.md
 theme:
   name: harmonic
 
