@@ -9,7 +9,7 @@ nav:
   - Projects:
       - Overview: projects/index.md
       - AI Master's project: projects/ai-masters-project/index.md
-      - FastAPI microservice: projects/fast-dsp-microservice/deploy.md
+      - FastAPI microservice: projects/fast-dsp-microservice/deployment-guide.md
 
 theme:
   name: material
