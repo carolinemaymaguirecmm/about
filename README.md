@@ -6,7 +6,7 @@ Hi! I'm Caroline Maguire — a technical writer and product specialist based in 
 
 ## 💼 What You'll Find Here
 
-This GitHub repository serves as my public portfolio and learning hub. 
+This GitHub repository serves as my public portfolio and learning hub.
 
 ---
 

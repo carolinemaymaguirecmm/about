@@ -1,16 +1,29 @@
-site_name: Docs Site
+site_name: Caroline Maguire – Technical Writing Portfolio
 
 nav:
   - Home: index.md
   - CV:
-      - Academic projects:
-          - Thesis: cv/academic-projects/academic-projects.md
-      - Writing samples:
-          - Writing samples: cv/writing-samples/writing-samples.md
-      - AI masters:
-          - AI masters project: cv/ai-masters-project/readme.md
+      - Overview: cv/index.md
+      - Academic projects: cv/academic-projects/academic-projects.md
+      - Writing samples: cv/writing-samples/writing-samples.md
+  - Projects:
+      - Overview: projects/index.md
+      - AI Master's project: projects/ai-masters-project/index.md
+      - FastAPI microservice: projects/fast-dsp-microservice/deploy.md
+
 theme:
-  name: harmonic
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
 
 plugins:
   - search
@@ -20,6 +33,17 @@ plugins:
       enabled: !ENV [ENABLE_PDF_EXPORT, false]
       add_cover_page: true
       enumerate_headings: false
-      print_page_title: CodeFusion Studio
-      cover_page_template: "docs/assets/templates/cover_page.tpl"
+      print_page_title: Technical Writing Portfolio
+      cover_page_template: docs/assets/templates/cover_page.tpl
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - footnotes
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed
+
 
