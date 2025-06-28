@@ -1,6 +1,6 @@
 # Deploy a FastAPI microservice to AWS EC2 using Uvicorn
 
-This guide shows you how to deploy a FastAPI microservice to AWS EC2. The example app fetches tidal data from the WorldTides API and serves it through a RESTful endpoint. You can adapt the same pattern for any data-driven API.
+This guide shows you how to deploy a FastAPI microservice to AWS EC2. The microservice fetches tidal data from the WorldTides API and serves it through a RESTful endpoint. You can adapt the same pattern for any data-driven API.
 
 ## Deploy the FastAPI microservice locally
 
@@ -15,6 +15,8 @@ Before you begin, make sure you have the following installed:
 - A free API key from [WorldTides](https://www.worldtides.info/register)
 
 ### Step 1: Clone the GitHub project
+
+Clone the GitHub project containing the Python, environment and requirements file:
 
 ```bash
 git clone git@github.com:carolinemaymaguirecmm/about.git
@@ -52,18 +54,40 @@ uvicorn main:app --reload
 
 You should see output similar to the following:
 
-```
+```bash
 INFO:     Uvicorn running on http://127.0.0.1:8000
 ```
 
 ### Step 6: View the endpoint in your browser
 
-Visit `http://localhost:8000/tides` in your browser to view the returned tide data as JSON.
+When you visit [http://localhost:8000/tides](http://localhost:8000/tides), you'll recieve the following JSON response:
 
-![Swagger UI Screenshot](./images/fast-api-browser.png)
+```json
+[
+  {
+    "station": "Youghal",
+    "lat": "51.9500",
+    "lon": "-7.8500",
+    "timezone": "Europe/Dublin",
+    "extremes": [
+      {
+        "time": "2025-06-26T03:18+01:00",
+        "type": "High",
+        "height": 3.41
+      },
+      {
+        "time": "2025-06-26T09:44+01:00",
+        "type": "Low",
+        "height": 0.91
+      }
+    ]
+  }
+]
 
-> **Note:**  
-> This endpoint returns tide data for three nearby stations. The number of stations is limited to avoid exceeding free-tier API limits. You can increase this limit by modifying the code.
+```
+
+> **Note**  
+> This endpoint returns tide data for three nearby stations. The number of stations is limited to avoid exceeding free-tier API limits. You can increase this limit by modifying `main.py`.
 
 ### Explore FastAPI documentation features
 
@@ -72,11 +96,9 @@ FastAPI provides interactive documentation out of the box. You can explore and t
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-![Swagger UI Screenshot](./images/fast-api-docs.png)
+![FastAPI interactive documentation in Swagger UI](./images/fast-api-docs.png)
 
 ## Deploy a FastAPI microservice to AWS EC2
-
-## Deploy the FastAPI microservice to AWS EC2
 
 Follow these steps to deploy the microservice to the cloud using Amazon EC2.
 
@@ -84,37 +106,39 @@ Follow these steps to deploy the microservice to the cloud using Amazon EC2.
 
 1. Go to the [AWS Management Console](https://console.aws.amazon.com/).
 2. Launch a new EC2 instance with the following configuration:
-   - **AMI**: Ubuntu Server 22.04 LTS
-   - **Instance type**: `t2.micro`
-   - **Key pair**: Create a new key pair and download the `.pem` file.
+
+      - **AMI**: Ubuntu Server 22.04 LTS
+      - **Instance type**: `t2.micro`
+      - **Key pair**: Create a new key pair and download the `.pem` file.
+  
 3. Click **Launch instance**.
 4. After launch, navigate to **EC2 > Instances**, select your instance, and copy the **Public IPv4 address**.
 
 ### Step 2: Configure the security group
 
-By default, AWS EC2 blocks all incoming traffic to your EC2 instance. To access your FastAPI app from a browser, you must allow traffic on the port Uvicorn uses. This value is typically `8000`, but can be changed as needed.
+By default, AWS EC2 blocks all incoming traffic to your EC2 instance. To access your FastAPI app from a browser, you must allow traffic on the port Uvicorn uses. This value is typically `8000`.
 
 1. In the EC2 Console, open your instance and scroll to the **Security** section.
-2. Click the linked **Security group** name.
+2. Click the linked security group name.
 3. Select the **Inbound rules** tab and click **Edit inbound rules**.
 4. Click **Add rule**, then enter the following values:
-   - **Type**: Custom TCP
-   - **Port range**: `8000`
-   - **Source**: `<your-ip-address>` or `0.0.0.0/0`
+      - **Type**: Custom TCP
+      - **Port range**: `8000`
+      - **Source**: `<your-ip-address>` or `0.0.0.0/0`
 5. Click **Save rules**.
 
-> **Important:**  
-> For security, restrict access by using your IP as the source instead of `0.0.0.0/0`. Only use 0.0.0.0/0 to allow public access during short testing periods, and revert to a more secure setting afterward.
+![Configuring an AWS EC2 security group](./images/aws-ec2-security-group.png)
+
+> **Important**  
+> For security, restrict access by using your IP as the source instead of `0.0.0.0/0`. Only use `0.0.0.0/0` to allow public access during short testing periods.
 
 ### Step 3: SSH into the instance
 
-Use SSH to connect to your EC2 instance. Replace `<your-key-name>` with your .pem file name and `<your-ec2-public-ip>` with the instance’s public IPv4 address:
+Use SSH to connect to your EC2 instance. Replace `<your-key-name>` with your `.pem` file name and `<your-ec2-public-ip>` with the instance’s public IPv4 address:
 
 ```bash
 ssh -i <your-key-name>.pem ubuntu@<your-ec2-public-ip>
 ```
-
-If prompted with a security warning, type `yes` to continue.
 
 ### Step 4: Set up the environment on EC2
 
@@ -124,7 +148,7 @@ Update the package index and install Python and Git:
 sudo apt update && sudo apt install -y python3 python3-pip python3-venv git
 ```
 
-### Step 5: Clone the repo
+### Step 5: Clone the GitHub project
 
 Clone the GitHub repository containing the project files:
 
