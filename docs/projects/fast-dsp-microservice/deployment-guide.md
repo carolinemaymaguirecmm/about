@@ -1,6 +1,6 @@
 # Deploy a FastAPI microservice to AWS EC2 using Uvicorn
 
-This guide shows you how to deploy a FastAPI microservice to AWS EC2. The microservice fetches tidal data from the WorldTides API and serves it through a RESTful endpoint. You can adapt the same pattern for any data-driven API.
+This guide shows you how to deploy a FastAPI microservice to AWS EC2. The service fetches data from a third-party API, processes the response, and exposes it through a RESTful endpoint. While the API used in this example uses a free tidal data API, the same pattern can be applied to any data-driven API.
 
 ## Deploy the FastAPI microservice locally
 
@@ -16,7 +16,7 @@ Before you begin, make sure you have the following installed:
 
 ### Step 1: Clone the GitHub project
 
-Clone the GitHub project containing the Python, environment and requirements file:
+Clone the GitHub project containing the Python, environment, and requirements files:
 
 ```bash
 git clone git@github.com:carolinemaymaguirecmm/about.git
@@ -29,6 +29,8 @@ cd about/docs/projects/fast-dsp-microservice
 python3 -m venv venv
 source venv/bin/activate
 ```
+
+\newpage
 
 ### Step 3: Install dependencies
 
@@ -60,38 +62,38 @@ INFO:     Uvicorn running on http://127.0.0.1:8000
 
 ### Step 6: View the endpoint in your browser
 
-When you visit [http://localhost:8000/tides](http://localhost:8000/tides), you'll recieve the following JSON response:
+When you visit [http://localhost:8000/tides](http://localhost:8000/tides), you'll receive the following JSON response:
 
 ```json
-[
-  {
-    "station": "Youghal",
-    "lat": "51.9500",
-    "lon": "-7.8500",
-    "timezone": "Europe/Dublin",
-    "extremes": [
-      {
-        "time": "2025-06-26T03:18+01:00",
-        "type": "High",
-        "height": 3.41
-      },
-      {
-        "time": "2025-06-26T09:44+01:00",
-        "type": "Low",
-        "height": 0.91
-      }
-    ]
-  }
-]
+{
+  "tide_data": [
+    {
+      "station": "Youghal",
+      "location": "51.9500, -7.8500",
+      "tides": [
+        {
+          "time": "01:13",
+          "type": "Low",
+          "height": -1.72
+        },
+        {
+          "time": "06:58",
+          "type": "High",
+          "height": 1.67
+        }
+      ]
+    }
+  ]
+}
 
 ```
 
 > **Note**  
-> This endpoint returns tide data for three nearby stations. The number of stations is limited to avoid exceeding free-tier API limits. You can increase this limit by modifying `main.py`.
+> This endpoint returns tide data for three nearby stations. The number of stations is limited to avoid exceeding free-tier API limits. You can change the base location, the radius, or the station limit by modifying `main.py`.
 
 ### Explore FastAPI documentation features
 
-FastAPI provides interactive documentation out of the box. You can explore and test your API using the following interfaces:
+FastAPI includes automatically generated interactive API documentation. You can explore and test your API using the following interfaces:
 
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
@@ -116,10 +118,10 @@ Follow these steps to deploy the microservice to the cloud using Amazon EC2.
 
 ### Step 2: Configure the security group
 
-By default, AWS EC2 blocks all incoming traffic to your EC2 instance. To access your FastAPI app from a browser, you must allow traffic on the port Uvicorn uses. This value is typically `8000`.
+AWS EC2 blocks all incoming traffic to your EC2 instance. To access your FastAPI app from a browser, you must allow traffic on the port Uvicorn uses. By default, this value is `8000`.
 
 1. In the EC2 Console, open your instance and scroll to the **Security** section.
-2. Click the linked security group name.
+2. Click the security group name.
 3. Select the **Inbound rules** tab and click **Edit inbound rules**.
 4. Click **Add rule**, then enter the following values:
       - **Type**: Custom TCP
@@ -127,7 +129,7 @@ By default, AWS EC2 blocks all incoming traffic to your EC2 instance. To access 
       - **Source**: `<your-ip-address>` or `0.0.0.0/0`
 5. Click **Save rules**.
 
-![Configuring an AWS EC2 security group](./images/aws-ec2-security-group.png)
+![Configure an AWS EC2 security group](./images/aws-ec2-security-group.png)
 
 > **Important**  
 > For security, restrict access by using your IP as the source instead of `0.0.0.0/0`. Only use `0.0.0.0/0` to allow public access during short testing periods.

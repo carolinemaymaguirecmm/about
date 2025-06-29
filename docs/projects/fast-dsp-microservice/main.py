@@ -14,10 +14,10 @@ LAT = 51.9500
 LON = -7.8500
 
 @app.get("/")
-def read_root():
+def read_root():# This data is displayed when you visit http://127.0.0.1:8000
     return {"message": "Welcome to the Tide Info API"}
 
-@app.get("/tides")
+@app.get("/tides")# This data is displayed when you visit http://127.0.0.1:8000/tides
 def get_fixed_tide_data():
     try:
         # Step 1: Get nearby stations within a 50km radius using the stations endpoint
@@ -29,11 +29,11 @@ def get_fixed_tide_data():
             "key": API_KEY
         })
         station_resp.raise_for_status()
-        station_data = station_resp.json().get("stations", [])[:3]
+        station_data = station_resp.json().get("stations", [])[:3]# Limit to 3 stations, adjust as appropriate
 
         results = []
 
-        # Step 2: Get tide data for each station using the extremes endpoint
+        # Step 2: For each station, retrieve tide information for today using the extremes endpoint
         for station in station_data:
             extreme_resp = requests.get(BASE_URL, params={
                 "extremes": "",
@@ -55,7 +55,7 @@ def get_fixed_tide_data():
                 }
                 for t in tide_data
             ]
-       # Step 4: Add tide and station data together 
+       # Step 4: Combine tide and station data  
             results.append({
                 "station": station["name"],
                 "location": f"{station['lat']}, {station['lon']}",
