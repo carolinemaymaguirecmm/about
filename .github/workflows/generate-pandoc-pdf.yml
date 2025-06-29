@@ -1,4 +1,4 @@
-name: Build and Commit PDF
+name: Generate Eisvogel styled PDF using pandoc and store in GitHub repo
 
 on:
   push:
