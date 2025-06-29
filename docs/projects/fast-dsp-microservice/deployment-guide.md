@@ -18,7 +18,9 @@ header-right: "\\hspace{1cm}"
 colorlinks: true
 linkcolor: blue
 urlcolor: blue
-
+header-includes:
+  - \usepackage{graphicx}
+  - \setkeys{Gin}{width=0.7\linewidth, keepaspectratio}
 ---
 
 # Deploy a FastAPI microservice to AWS EC2 using Uvicorn
