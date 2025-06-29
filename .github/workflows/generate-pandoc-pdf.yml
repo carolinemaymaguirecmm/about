@@ -1,4 +1,4 @@
-name: Build PDF with Pandoc
+name: Build and Commit PDF
 
 on:
   push:
@@ -6,12 +6,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-pdf:
+  build-and-commit:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install TeX Live and Pandoc
         run: |
@@ -30,8 +32,11 @@ jobs:
             --pdf-engine=xelatex \
             --highlight-style tango
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-guide-pdf
-          path: deployment-guide.pdf
+      - name: Commit PDF to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add deployment-guide.pdf
+          git commit -m "Auto-generate PDF from deployment-guide.md" || echo "No changes to commit"
+          git push
