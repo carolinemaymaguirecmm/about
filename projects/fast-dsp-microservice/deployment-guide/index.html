@@ -1,0 +1,1163 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Caroline Maguire \newline \href{https://github.com/carolinemaymaguirecmm/about}{github.com/carolinemaymaguirecmm}">
+      
+      
+      
+        <link rel="prev" href="../../ai-masters-project/">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Deploy a FastAPI microservice to AWS EC2 using Uvicorn - Caroline Maguire – Technical Writing Portfolio</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deploy-a-fastapi-microservice-to-aws-ec2-using-uvicorn" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Caroline Maguire – Technical Writing Portfolio" class="md-header__button md-logo" aria-label="Caroline Maguire – Technical Writing Portfolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Caroline Maguire – Technical Writing Portfolio
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deploy a FastAPI microservice to AWS EC2 using Uvicorn
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../cv/" class="md-tabs__link">
+          
+  
+  
+  CV
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Caroline Maguire – Technical Writing Portfolio" class="md-nav__button md-logo" aria-label="Caroline Maguire – Technical Writing Portfolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Caroline Maguire – Technical Writing Portfolio
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    CV
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CV
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cv/academic-projects/academic-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Academic projects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cv/writing-samples/writing-samples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Writing samples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Projects
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-masters-project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Master's project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    FastAPI microservice
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    FastAPI microservice
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-fastapi-microservice-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy the FastAPI microservice locally
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy the FastAPI microservice locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-the-github-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Clone the GitHub project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-set-up-and-activate-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Set up and activate a virtual environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Install dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-add-your-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Add your API Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-start-the-api-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Start the API server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-view-the-endpoint-in-your-browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: View the endpoint in your browser
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explore-fastapi-documentation-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explore FastAPI documentation features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-a-fastapi-microservice-to-aws-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy a FastAPI microservice to AWS EC2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy a FastAPI microservice to AWS EC2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-launch-an-ec2-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Launch an EC2 instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-configure-the-security-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Configure the security group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-ssh-into-the-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: SSH into the instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-set-up-the-environment-on-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Set up the environment on EC2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-clone-the-github-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Clone the GitHub project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-set-up-and-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Set up and run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-add-your-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Add your API key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-start-fastapi-with-public-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Start FastAPI with public access
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-fastapi-microservice-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy the FastAPI microservice locally
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy the FastAPI microservice locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-the-github-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Clone the GitHub project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-set-up-and-activate-a-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Set up and activate a virtual environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Install dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-add-your-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Add your API Key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-start-the-api-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Start the API server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-view-the-endpoint-in-your-browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: View the endpoint in your browser
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explore-fastapi-documentation-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explore FastAPI documentation features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-a-fastapi-microservice-to-aws-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy a FastAPI microservice to AWS EC2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy a FastAPI microservice to AWS EC2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-launch-an-ec2-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Launch an EC2 instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-configure-the-security-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Configure the security group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-ssh-into-the-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: SSH into the instance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-set-up-the-environment-on-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Set up the environment on EC2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-clone-the-github-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Clone the GitHub project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-set-up-and-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Set up and run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-add-your-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Add your API key
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-start-fastapi-with-public-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Start FastAPI with public access
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="deploy-a-fastapi-microservice-to-aws-ec2-using-uvicorn">Deploy a FastAPI microservice to AWS EC2 using Uvicorn<a class="headerlink" href="#deploy-a-fastapi-microservice-to-aws-ec2-using-uvicorn" title="Permanent link">&para;</a></h1>
+<p>This guide shows you how to deploy a FastAPI microservice to AWS EC2. The service fetches data from a third-party API, processes the response, and exposes it through a RESTful endpoint. While the API used in this example uses a free tidal data API, the same pattern can be applied to any data-driven API.</p>
+<h2 id="deploy-the-fastapi-microservice-locally">Deploy the FastAPI microservice locally<a class="headerlink" href="#deploy-the-fastapi-microservice-locally" title="Permanent link">&para;</a></h2>
+<p>Before deploying to EC2, test your app locally to make sure everything runs as expected.</p>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<p>Before you begin, make sure you have the following installed:</p>
+<ul>
+<li>Python 3.10 or later</li>
+<li><code>pip</code></li>
+<li>A free API key from <a href="https://www.worldtides.info/register">WorldTides</a></li>
+</ul>
+<h3 id="step-1-clone-the-github-project">Step 1: Clone the GitHub project<a class="headerlink" href="#step-1-clone-the-github-project" title="Permanent link">&para;</a></h3>
+<p>Clone the GitHub project containing the Python, environment, and requirements files:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:carolinemaymaguirecmm/about.git
+<span class="nb">cd</span><span class="w"> </span>about/docs/projects/fast-dsp-microservice
+</code></pre></div>
+<h3 id="step-2-set-up-and-activate-a-virtual-environment">Step 2: Set up and activate a virtual environment<a class="headerlink" href="#step-2-set-up-and-activate-a-virtual-environment" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</code></pre></div>
+<h3 id="step-3-install-dependencies">Step 3: Install dependencies<a class="headerlink" href="#step-3-install-dependencies" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div>
+<h3 id="step-4-add-your-api-key">Step 4: Add your API Key<a class="headerlink" href="#step-4-add-your-api-key" title="Permanent link">&para;</a></h3>
+<p>Open the <code>.env</code> file and replace the placeholder with your WorldTides API key:</p>
+<div class="highlight"><pre><span></span><code>TIDE_API_KEY=your_api_key_here
+</code></pre></div>
+<h3 id="step-5-start-the-api-server">Step 5: Start the API server<a class="headerlink" href="#step-5-start-the-api-server" title="Permanent link">&para;</a></h3>
+<p>Run the FastAPI app using Uvicorn:</p>
+<div class="highlight"><pre><span></span><code>uvicorn<span class="w"> </span>main:app<span class="w"> </span>--reload
+</code></pre></div>
+<p>You should see output similar to the following:</p>
+<div class="highlight"><pre><span></span><code>INFO:<span class="w">     </span>Uvicorn<span class="w"> </span>running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:8000
+</code></pre></div>
+<h3 id="step-6-view-the-endpoint-in-your-browser">Step 6: View the endpoint in your browser<a class="headerlink" href="#step-6-view-the-endpoint-in-your-browser" title="Permanent link">&para;</a></h3>
+<p>When you visit <a href="http://localhost:8000/tides">http://localhost:8000/tides</a>, you'll receive the following JSON response:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tide_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;station&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Youghal&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;51.9500, -7.8500&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tides&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;01:13&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Low&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-1.72</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;06:58&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;High&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.67</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Note</strong><br />
+This endpoint returns tide data for three nearby stations. The number of stations is limited to avoid exceeding free-tier API limits. You can change the base location, the radius, or the station limit by modifying <code>main.py</code>.</p>
+</blockquote>
+<h3 id="explore-fastapi-documentation-features">Explore FastAPI documentation features<a class="headerlink" href="#explore-fastapi-documentation-features" title="Permanent link">&para;</a></h3>
+<p>FastAPI includes automatically generated interactive API documentation. You can explore and test your API using the following interfaces:</p>
+<ul>
+<li><strong>Swagger UI</strong>: <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></li>
+<li><strong>ReDoc</strong>: <a href="http://localhost:8000/redoc">http://localhost:8000/redoc</a></li>
+</ul>
+<p><img alt="FastAPI interactive documentation in Swagger UI" src="../images/fast-api-docs.png" /></p>
+<h2 id="deploy-a-fastapi-microservice-to-aws-ec2">Deploy a FastAPI microservice to AWS EC2<a class="headerlink" href="#deploy-a-fastapi-microservice-to-aws-ec2" title="Permanent link">&para;</a></h2>
+<p>Follow these steps to deploy the microservice to the cloud using Amazon EC2.</p>
+<h3 id="step-1-launch-an-ec2-instance">Step 1: Launch an EC2 instance<a class="headerlink" href="#step-1-launch-an-ec2-instance" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to the <a href="https://console.aws.amazon.com/">AWS Management Console</a>.</li>
+<li>
+<p>Launch a new EC2 instance with the following configuration:</p>
+<ul>
+<li><strong>AMI</strong>: Ubuntu Server 22.04 LTS</li>
+<li><strong>Instance type</strong>: <code>t2.micro</code></li>
+<li><strong>Key pair</strong>: Create a new key pair and download the <code>.pem</code> file.</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Launch instance</strong>.</p>
+</li>
+<li>After launch, navigate to <strong>EC2 &gt; Instances</strong>, select your instance, and copy the <strong>Public IPv4 address</strong>.</li>
+</ol>
+<h3 id="step-2-configure-the-security-group">Step 2: Configure the security group<a class="headerlink" href="#step-2-configure-the-security-group" title="Permanent link">&para;</a></h3>
+<p>AWS EC2 blocks all incoming traffic to your EC2 instance. To access your FastAPI app from a browser, you must allow traffic on the port Uvicorn uses. By default, this value is <code>8000</code>.</p>
+<ol>
+<li>In the EC2 Console, open your instance and scroll to the <strong>Security</strong> section.</li>
+<li>Click the security group name.</li>
+<li>Select the <strong>Inbound rules</strong> tab and click <strong>Edit inbound rules</strong>.</li>
+<li>Click <strong>Add rule</strong>, then enter the following values:<ul>
+<li><strong>Type</strong>: Custom TCP</li>
+<li><strong>Port range</strong>: <code>8000</code></li>
+<li><strong>Source</strong>: <code>&lt;your-ip-address&gt;</code> or <code>0.0.0.0/0</code></li>
+</ul>
+</li>
+<li>Click <strong>Save rules</strong>.</li>
+</ol>
+<p><img alt="Configure an AWS EC2 security group" src="../images/aws-ec2-security-group.png" /></p>
+<blockquote>
+<p><strong>Important</strong><br />
+For security, restrict access by using your IP as the source instead of <code>0.0.0.0/0</code>. Only use <code>0.0.0.0/0</code> to allow public access during short testing periods.</p>
+</blockquote>
+<h3 id="step-3-ssh-into-the-instance">Step 3: SSH into the instance<a class="headerlink" href="#step-3-ssh-into-the-instance" title="Permanent link">&para;</a></h3>
+<p>Use SSH to connect to your EC2 instance. Replace <code>&lt;your-key-name&gt;</code> with your <code>.pem</code> file name and <code>&lt;your-ec2-public-ip&gt;</code> with the instance’s public IPv4 address:</p>
+<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>-i<span class="w"> </span>&lt;your-key-name&gt;.pem<span class="w"> </span>ubuntu@&lt;your-ec2-public-ip&gt;
+</code></pre></div>
+<h3 id="step-4-set-up-the-environment-on-ec2">Step 4: Set up the environment on EC2<a class="headerlink" href="#step-4-set-up-the-environment-on-ec2" title="Permanent link">&para;</a></h3>
+<p>Update the package index and install Python and Git:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>python3-venv<span class="w"> </span>git
+</code></pre></div>
+<h3 id="step-5-clone-the-github-project">Step 5: Clone the GitHub project<a class="headerlink" href="#step-5-clone-the-github-project" title="Permanent link">&para;</a></h3>
+<p>Clone the GitHub repository containing the project files:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/carolinemaymaguirecmm/about.git
+<span class="nb">cd</span><span class="w"> </span>about/docs/projects/fast-dsp-microservice
+</code></pre></div>
+<h3 id="step-6-set-up-and-run">Step 6: Set up and run<a class="headerlink" href="#step-6-set-up-and-run" title="Permanent link">&para;</a></h3>
+<p>Create and activate a virtual environment, then install the required Python packages:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div>
+<h3 id="step-7-add-your-api-key">Step 7: Add your API key<a class="headerlink" href="#step-7-add-your-api-key" title="Permanent link">&para;</a></h3>
+<p>Open the <code>.env</code> file and add your WorldTides API key:</p>
+<div class="highlight"><pre><span></span><code>nano<span class="w"> </span>.env
+</code></pre></div>
+<p>Then add the following line:</p>
+<div class="highlight"><pre><span></span><code>TIDE_API_KEY=your_api_key_here
+</code></pre></div>
+<h3 id="step-8-start-fastapi-with-public-access">Step 8: Start FastAPI with public access<a class="headerlink" href="#step-8-start-fastapi-with-public-access" title="Permanent link">&para;</a></h3>
+<p>Start the FastAPI server with the following command:</p>
+<div class="highlight"><pre><span></span><code>uvicorn<span class="w"> </span>main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</code></pre></div>
+<p>Once the server is running, visit: <code>http://&lt;your-ec2-public-ip&gt;/tides</code></p>
+<p>You should see a JSON response with tide data from the nearest stations.</p>
+<p>Your FastAPI microservice is now live and accessible on AWS EC2. For additional tips on how to enhance your deployment, refer to the official <a href="https://fastapi.tiangolo.com/deployment/">FastAPI deployment guide</a>.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.top", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
