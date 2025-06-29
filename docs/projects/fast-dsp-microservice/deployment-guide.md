@@ -53,8 +53,6 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-\newpage
-
 ### Step 3: Install dependencies
 
 ```bash
