@@ -15,12 +15,16 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install TeX Live and Pandoc
+      - name: Install Pandoc and full LaTeX dependencies
         run: |
           sudo apt update
-          sudo apt install -y texlive texlive-xetex pandoc wget unzip
+          sudo apt install -y \
+            texlive-xetex \
+            texlive-fonts-extra \
+            texlive-latex-extra \
+            pandoc wget unzip
 
-      - name: Download Eisvogel template
+      - name: Download Eisvogel template and includes
         run: |
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/eisvogel.latex -O eisvogel.latex
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/passoptions.latex -O passoptions.latex
@@ -33,10 +37,11 @@ jobs:
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/after-header-includes.latex -O after-header-includes.latex
 
       - name: Generate PDF
+        working-directory: docs/projects/fast-dsp-microservice
         run: |
-          pandoc docs/projects/fast-dsp-microservice/deployment-guide.md \
-            -o docs/projects/fast-dsp-microservice/deployment-guide.pdf \
-            --template eisvogel.latex \
+          pandoc deployment-guide.md \
+            -o deployment-guide.pdf \
+            --template ../../../eisvogel.latex \
             --pdf-engine=xelatex \
             --highlight-style tango
 
@@ -45,6 +50,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add deployment-guide.pdf
+          git add docs/projects/fast-dsp-microservice/deployment-guide.pdf
           git commit -m "Auto-generate PDF from deployment-guide.md" || echo "No changes to commit"
           git push
