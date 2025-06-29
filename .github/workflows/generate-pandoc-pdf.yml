@@ -26,6 +26,10 @@ jobs:
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/passoptions.latex -O passoptions.latex
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/fonts.latex -O fonts.latex
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/font-settings.latex -O font-settings.latex
+          wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/common.latex -O common.latex
+          wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/eisvogel-added.latex -O eisvogel-added.latex
+          wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/eisvogel-title-page.latex -O eisvogel-title-page.latex
+          wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/hypersetup.latex -O hypersetup.latex
 
       - name: Generate PDF
         run: |
