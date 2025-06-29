@@ -34,10 +34,9 @@ jobs:
 
       - name: Generate PDF
         run: |
-          cd about/docs/projects/fast-dsp-microservice
-          pandoc deployment-guide.md \
-            -o deployment-guide.pdf \
-            --template ../../../eisvogel.latex \
+          pandoc docs/projects/fast-dsp-microservice/deployment-guide.md \
+            -o docs/projects/fast-dsp-microservice/deployment-guide.pdf \
+            --template eisvogel.latex \
             --pdf-engine=xelatex \
             --highlight-style tango
 
