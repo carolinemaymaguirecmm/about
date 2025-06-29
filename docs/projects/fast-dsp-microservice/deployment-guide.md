@@ -1,3 +1,26 @@
+---
+title: "Deploy a FastAPI microservice to AWS EC2 using Uvicorn"
+author: "Caroline Maguire \\newline \\href{https://github.com/carolinemaymaguirecmm/about}{github.com/carolinemaymaguirecmm}"
+date: "2025-06-29"
+subject: "Markdown"
+keywords: [FastAPI, EC2]
+lang: "en"
+titlepage: true
+titlepage-color: "3C9F53"
+titlepage-text-color: "FFFFFF"
+titlepage-rule-color: "FFFFFF"
+titlepage-rule-height: 2
+footer-right: "Page \\thepage"
+footer-left: "\\thetitle"
+header-left: "\\hspace{1cm}"
+header-center: "\\hspace{1cm}"
+header-right: "\\hspace{1cm}"
+colorlinks: true
+linkcolor: blue
+urlcolor: blue
+
+---
+
 # Deploy a FastAPI microservice to AWS EC2 using Uvicorn
 
 This guide shows you how to deploy a FastAPI microservice to AWS EC2. The service fetches data from a third-party API, processes the response, and exposes it through a RESTful endpoint. While the API used in this example uses a free tidal data API, the same pattern can be applied to any data-driven API.
