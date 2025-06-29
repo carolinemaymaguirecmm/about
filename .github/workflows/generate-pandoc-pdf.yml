@@ -30,6 +30,7 @@ jobs:
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/eisvogel-added.latex -O eisvogel-added.latex
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/eisvogel-title-page.latex -O eisvogel-title-page.latex
           wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/hypersetup.latex -O hypersetup.latex
+          wget https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/template-multi-file/after-header-includes.latex -O after-header-includes.latex
 
       - name: Generate PDF
         run: |
