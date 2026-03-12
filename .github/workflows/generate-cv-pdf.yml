@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'docs/cv/cv/caroline-maguire-cv.html'
+      - 'docs/cv/resume/caroline-maguire-cv.html'
   workflow_dispatch:
 
 jobs:
@@ -31,6 +31,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/cv/cv/caroline-maguire-cv.pdf
+          git add docs/cv/resume/caroline-maguire-cv.pdf
           git diff --cached --quiet || git commit -m "Auto-generate CV PDF"
           git push
