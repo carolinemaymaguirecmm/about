@@ -7,7 +7,7 @@ const path = require('path');
 
   await page.setViewport({ width: 1100, height: 800 });
 
-  const htmlPath = path.resolve(__dirname, 'docs/cv/caroline-maguire-cv.html');
+  const htmlPath = path.resolve(__dirname, 'docs/cv/cv/caroline-maguire-cv.html');
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' });
 
   await page.emulateMediaType('screen');
@@ -26,7 +26,7 @@ const path = require('path');
     `
   });
 
-  const outputPath = path.resolve(__dirname, 'docs/cv/caroline-maguire-cv.pdf');
+  const outputPath = path.resolve(__dirname, 'docs/cv/cv/caroline-maguire-cv.pdf');
   await page.pdf({
     path: outputPath,
     format: 'A4',
