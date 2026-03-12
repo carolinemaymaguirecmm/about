@@ -27,6 +27,7 @@
       max-width: 1100px;
       margin: 30px auto;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(to right, #B59D69 35%, #fff 35%);
     }
 
     /* ── Left sidebar ── */
@@ -50,12 +51,22 @@
       opacity: 0.9;
     }
 
-    .sidebar .contact-info p {
-      font-size: 0.88rem;
-      margin-bottom: 12px;
+    .contact-box {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 14px 16px;
     }
 
-    .sidebar .contact-info a {
+    .contact-box p {
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .contact-box a {
       color: #fff;
       text-decoration: underline;
       word-break: break-all;
@@ -91,6 +102,17 @@
     .portfolio-item a {
       color: #fff;
       font-size: 0.82rem;
+    }
+
+    .pdf-spacer {
+      padding-top: 40px;
+    }
+
+    .sidebar-page-break {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      margin: 30px 0;
+      height: 0;
     }
 
     .skill-list {
@@ -147,6 +169,7 @@
       font-size: 0.82rem;
       color: #888;
       font-style: italic;
+      margin-bottom: 4px;
     }
 
     .job h3 {
@@ -197,65 +220,20 @@
       opacity: 0.85;
     }
 
-    /* ── Print styles ── */
-    @page {
-      size: A4;
-      margin: 0;
-    }
-
     @media print {
       body {
-        background: #fff;
-        margin: 0;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
       .cv-container {
-        display: table !important;
-        table-layout: fixed !important;
-        width: 100% !important;
         box-shadow: none;
-        margin: 0;
       }
-      .sidebar {
-        display: table-cell !important;
-        width: 28% !important;
-        vertical-align: top;
-        padding: 24px 14px;
-        background: #B59D69 !important;
-        color: #fff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .main {
-        display: table-cell !important;
-        width: 72% !important;
-        vertical-align: top;
-        padding: 24px 24px;
-      }
-      .sidebar a {
-        color: #fff !important;
-      }
-      .job, .edu-item, .portfolio-item {
+      .job {
         break-inside: avoid;
       }
-      .sidebar h1 {
-        font-size: 1.4rem;
-      }
-      .sidebar h2 {
-        font-size: 1rem;
-      }
-      .main h2 {
-        font-size: 1.1rem;
-      }
-      .job h3 {
-        font-size: 0.95rem;
-      }
-      .summary p, .job ul li, .job .company, .job .date,
-      .sidebar .contact-info p, .portfolio-item .portfolio-title,
-      .portfolio-item .portfolio-desc, .portfolio-item a,
-      .skill-list li, .edu-item h3, .edu-item .date, .edu-item .institution {
-        font-size: 0.78rem;
+      .sidebar-page-break {
+        break-before: page;
+        page-break-before: always;
       }
     }
 
@@ -277,7 +255,10 @@
       <h1>Caroline Maguire</h1>
       <p class="title">Technical Writer</p>
 
-      <div class="contact-info">
+      <hr class="divider">
+
+      <h2>Contact</h2>
+      <div class="contact-box">
         <p><i class="fa-solid fa-location-dot"></i> Cork, Ireland</p>
         <p><i class="fa-solid fa-envelope"></i> <a href="mailto:carolinemaymaguire@gmail.com">carolinemaymaguire@gmail.com</a></p>
         <p><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/caroline-maguire/" target="_blank">linkedin.com/in/caroline-maguire</a></p>
@@ -324,7 +305,7 @@
         <p class="institution">Mary Immaculate College, Limerick</p>
       </div>
 
-      <hr class="divider">
+      <div class="sidebar-page-break"></div>
 
       <h2>Portfolio</h2>
 
@@ -334,7 +315,7 @@
         <a href="https://developer.analog.com/docs/codefusion-studio/latest/user-guide" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Documentation</a>
       </div>
 
-      <div class="portfolio-item">
+      <div class="portfolio-item pdf-spacer">
         <p class="portfolio-title">Analog Devices – CodeFusion Studio GitHub Repository</p>
         <p class="portfolio-desc">Repository for CodeFusion Studio User Guide.</p>
         <a href="https://github.com/analogdevicesinc/codefusion-studio" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Repository</a>
@@ -357,7 +338,7 @@
         <p class="portfolio-desc">User Guide for the Oomnitza SaaS asset management platform.</p>
         <a href="https://oomnitza.zendesk.com/hc/en-us" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Documentation</a>
       </div>
-
+<div> </div>
       <div class="portfolio-item">
         <p class="portfolio-title">Oomnitza – API GitHub Repository</p>
         <p class="portfolio-desc">Oomnitza developer-facing integration documentation.</p>
@@ -370,7 +351,7 @@
         <a href="https://docs.johnsoncontrols.com/bas/r/Metasys/en-US/SCT-System-Configuration-Tool-Help/17.0" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Documentation</a>
       </div>
 
-      <hr class="divider">
+      <div class="sidebar-page-break"></div>
 
       <h2>Core Skills</h2>
       <ul class="skill-list">
@@ -381,7 +362,7 @@
         <li>QA &amp; Pre-release Testing (AWS EC2, Docker, Jenkins, GitHub Actions, VMs, Linux, Windows)</li>
         <li>Content Strategy &amp; Auditing</li>
         <li>UX Writing &amp; Content Design (Figma)</li>
-        <li>Project Management (Jira, Confluence, Zendesk)</li>
+        <li class="pdf-spacer">Project Management (Jira, Confluence, Zendesk)</li>
         <li>DITA/XML &amp; Structured Authoring (Oxygen, FrameMaker, MadCap Flare)</li>
         <li>Programming (Python, C#, JavaScript, SQL, HTML/CSS)</li>
       </ul>
@@ -421,7 +402,7 @@
           <p class="company">Oomnitza</p>
           <ul>
             <li><strong>Documentation:</strong> Built out the complete product documentation suite from scratch, ensuring comprehensive coverage of all features. Created and managed HTML content using MadCap Flare, and managed open-source documentation on GitHub using Markdown in a docs-as-code workflow.</li>
-            <li><strong>APIs:</strong> Tested and documented APIs using tools such as Postman, Swagger, and cURL.</li>
+            <li class="pdf-spacer"><strong>APIs:</strong> Tested and documented APIs using tools such as Postman, Swagger, and cURL.</li>
             <li><strong>Style Guide Implementation:</strong> Established and enforced documentation style guide standards.</li>
             <li><strong>Product Design:</strong> Gathered requirements, designed features in Figma, and created supporting documentation for development and stakeholders.</li>
             <li><strong>Product Release Leadership:</strong> Led a major product release by coordinating with cross-functional teams, including Senior Product Management, Support, Customer Success, and Engineering.</li>
@@ -455,7 +436,7 @@
             <li><strong>Metasys® Tools Lead Writer:</strong> Led content creation for Metasys® Tools, progressing from Graduate Technical Writer to Technical Writer III.</li>
             <li><strong>Content Migration &amp; Process Improvement:</strong> Part of the DITA team responsible for migrating Tech Comms content to DITA/XML across the organisation, improving consistency and streamlining the publishing workflow.</li>
             <li><strong>Documentation Tools:</strong> Created and managed DITA/XML content using Oxygen, XMetaL, FrameMaker, and Documentum, with version control through SVN and later Ixiasoft CMS.</li>
-            <li><strong>Publishing Portal Maintenance:</strong> Worked with the Web Team to maintain the Fluidtopics publishing portal, assisting in testing, maintenance, and updates using CSS, JavaScript, Python, and SQL.</li>
+            <li class="pdf-spacer"><strong>Publishing Portal Maintenance:</strong> Worked with the Web Team to maintain the Fluidtopics publishing portal, assisting in testing, maintenance, and updates using CSS, JavaScript, Python, and SQL.</li>
             <li><strong>QA Testing:</strong> QA tested software builds and the content that surrounds it.</li>
             <li><strong>DITA/XML Training:</strong> Delivered training on DITA/XML publishing; tested and troubleshot build and output errors.</li>
             <li><strong>Peer Support:</strong> Provided peer reviews and support on technical writing tools such as Oxygen, Ixiasoft, Fluidtopics, and SVN.</li>
