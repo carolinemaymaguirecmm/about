@@ -2,7 +2,7 @@
 
 This section contains writing samples and project work relevant to technical writing and documentation.
 
-- [CV](./cv/cv.md): My current CV.
+- [CV](./cv/caroline-maguire-cv.html): My current CV.
 
 - [Academic projects](./academic-projects/academic-projects.md): Research undertaken as part of my postgraduate studies.
 
