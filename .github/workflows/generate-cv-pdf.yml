@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'docs/cv/resume/caroline-maguire-cv.html'
+      - 'generate-cv-pdf.js'
   workflow_dispatch:
 
 jobs:
